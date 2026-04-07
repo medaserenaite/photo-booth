@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+@layer base {
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+
+  body {
+    background-color: #0a0704;
+    color: #f5e6c8;
+    font-family: Georgia, serif;
+    @apply antialiased overflow-hidden;
+    touch-action: manipulation;
+    /* Subtle wood-grain noise texture */
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(200, 134, 10, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(139, 26, 26, 0.06) 0%, transparent 60%);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ── Components ────────────────────────────────────────────────────────────── */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           px-8 py-4 rounded-2xl text-lg font-bold
+           transition-all duration-200 active:scale-95
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100
+           min-h-[56px] cursor-pointer select-none;
+    font-family: Georgia, serif;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    @apply btn;
+    background: linear-gradient(135deg, #C8860A 0%, #8B1A1A 100%);
+    box-shadow: 0 4px 24px rgba(200, 134, 10, 0.25), inset 0 1px 0 rgba(255,220,120,0.15);
+    color: #f5e6c8;
+  }
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 32px rgba(200, 134, 10, 0.4), inset 0 1px 0 rgba(255,220,120,0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    @apply btn bg-white/5 border border-amber-900/40 text-amber-200/70
+           hover:bg-amber-900/20 hover:border-amber-700/50 hover:text-amber-100;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-900/20 border border-red-800/40 text-red-400
+           hover:bg-red-900/30;
+  }
+
+  .card {
+    background: rgba(26, 16, 8, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 134, 10, 0.15);
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(200,134,10,0.08);
+  }
+
+  .step-title {
+    @apply text-3xl md:text-4xl font-bold text-center mb-2;
+    color: #f5e6c8;
+  }
+
+  .step-subtitle {
+    @apply text-center text-lg mb-6;
+    color: rgba(245, 230, 200, 0.5);
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #F4D03F 0%, #C8860A 40%, #8B1A1A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-parchment {
+    color: #f5e6c8;
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(200, 134, 10, 0.6);
+  }
+
+  .glow-crimson {
+    box-shadow: 0 0 20px rgba(139, 26, 26, 0.6);
+  }
+
+  /* Candlelight vignette overlay */
+  .vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ── Camera ──────────────────────────────────────────────────────────────────── */
+.camera-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  max-height: calc(100vh - 220px);
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #000;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.camera-frame-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+}
+
+.camera-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff8e1;
+  border-radius: inherit;
+  animation: flash 0.4s ease-out forwards;
+}
+
+.countdown-number {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(6rem, 20vw, 12rem);
+  font-weight: 900;
+  font-family: Georgia, serif;
+  color: #F4D03F;
+  text-shadow: 0 0 40px rgba(200,134,10,0.8), 0 4px 8px rgba(0,0,0,0.9);
+  animation: countdown 0.9s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ── Masonry gallery ─────────────────────────────────────────────────────────── */
+.masonry-grid { columns: 2; column-gap: 0.75rem; }
+@media (min-width: 640px)  { .masonry-grid { columns: 3; } }
+@media (min-width: 1024px) { .masonry-grid { columns: 4; } }
+.masonry-item { break-inside: avoid; margin-bottom: 0.75rem; }
+
+/* ── Confetti canvas ─────────────────────────────────────────────────────────── */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Decorative divider ──────────────────────────────────────────────────────── */
+.divider-rune {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(200, 134, 10, 0.4);
+  font-size: 1.25rem;
+}
+.divider-rune::before,
+.divider-rune::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(200,134,10,0.3), transparent);
+}

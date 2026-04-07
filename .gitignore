@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+client/dist/
+
+# Environment
+.env
+.env.local
+
+# Uploaded photos (use cloud storage or persistent disk in production)
+server/uploads/
+
+# Database
+server/data/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Vite cache
+client/.vite/
+
+# Test coverage
+coverage/
+
+# Misc
+*.local

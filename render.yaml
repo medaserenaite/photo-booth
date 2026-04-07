@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: party-booth
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: EVENT_NAME
+        value: Pop DeKegg's Tavern
+      - key: GALLERY_ENABLED
+        value: "true"
+      - key: GALLERY_SLUG
+        value: party
+      - key: PUBLIC_URL
+        sync: false
+    disk:
+      name: uploads
+      mountPath: /app/server/uploads
+      sizeGB: 10
