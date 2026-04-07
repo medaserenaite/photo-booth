@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:22-slim
 
 # Install python and build tools for native modules (sharp, better-sqlite3)
 RUN apt-get update && apt-get install -y \
