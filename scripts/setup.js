@@ -479,6 +479,464 @@ const frameDefs = [
 </svg>`;
     },
   },
+
+  // ── 7. Ship's Wheel ──────────────────────────────────────────────────────
+  {
+    name: 'ships-wheel.png',
+    svg: () => {
+      // Render a ship's wheel: spokes + rim + hub at (px,py)
+      const wheel = (px, py, rimR, hubR, nSpokes, color, strokeW = 2.5) => {
+        const spokes = Array.from({ length: nSpokes }, (_, i) => {
+          const a = (i * Math.PI * 2) / nSpokes;
+          const x1 = (px + hubR * Math.cos(a)).toFixed(2);
+          const y1 = (py + hubR * Math.sin(a)).toFixed(2);
+          const x2 = (px + rimR * Math.cos(a)).toFixed(2);
+          const y2 = (py + rimR * Math.sin(a)).toFixed(2);
+          return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
+            stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
+        }).join('');
+        return `
+        ${spokes}
+        <circle cx="${px}" cy="${py}" r="${rimR}" fill="none" stroke="${color}" stroke-width="${strokeW + 1.5}"/>
+        <circle cx="${px}" cy="${py}" r="${hubR}" fill="none" stroke="${color}" stroke-width="${strokeW}"/>
+        <circle cx="${px}" cy="${py}" r="${(hubR * 0.45).toFixed(1)}" fill="${color}"/>`;
+      };
+
+      return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  <defs>
+    <linearGradient id="walnut" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#2e1a08"/>
+      <stop offset="40%"  stop-color="#1a0e04"/>
+      <stop offset="100%" stop-color="#261406"/>
+    </linearGradient>
+    <linearGradient id="walnutH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#6a3a14" stop-opacity="0.25"/>
+      <stop offset="50%"  stop-color="#1a0e04" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#6a3a14" stop-opacity="0.25"/>
+    </linearGradient>
+    <filter id="brassGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Walnut wood border -->
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#walnut)"/>
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#walnutH)"/>
+
+  <!-- Wood grain lines (horizontal) -->
+  ${[7, 15, 24, 35, 46, 56].map(y => `
+  <line x1="0" y1="${y}"     x2="${W}" y2="${y}"     stroke="#110800" stroke-width="1" opacity="0.38"/>
+  <line x1="0" y1="${H - y}" x2="${W}" y2="${H - y}" stroke="#110800" stroke-width="1" opacity="0.38"/>
+  `).join('')}
+
+  <!-- Outer rope border -->
+  <rect x="4" y="4" width="${W - 8}" height="${H - 8}" fill="none"
+    stroke="#7a5020" stroke-width="8" stroke-dasharray="20,9" stroke-linecap="round" opacity="0.7"/>
+  <rect x="4" y="4" width="${W - 8}" height="${H - 8}" fill="none"
+    stroke="#c09050" stroke-width="3" stroke-dasharray="20,9" stroke-dashoffset="14"
+    stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Brass inner border -->
+  <rect x="${B - 8}" y="${B - 8}" width="${W - B * 2 + 16}" height="${H - B * 2 + 16}" fill="none"
+    stroke="#b8870a" stroke-width="3.5" filter="url(#brassGlow)" opacity="0.85"/>
+  <rect x="${B - 3}" y="${B - 3}" width="${W - B * 2 + 6}" height="${H - B * 2 + 6}" fill="none"
+    stroke="#e8c050" stroke-width="1.5" opacity="0.8"/>
+
+  <!-- Corner wheels (8 spokes each) -->
+  ${[[hB, hB], [W - hB, hB], [hB, H - hB], [W - hB, H - hB]].map(([px, py]) =>
+    wheel(px, py, hB - 8, hB - 20, 8, '#c8a030')
+  ).join('')}
+
+  <!-- Top-center accent wheel (slightly larger) -->
+  ${wheel(cx, hB, hB - 7, hB - 19, 8, '#c8a030', 2.5)}
+
+  <!-- Mid-side compass circles -->
+  ${[[hB, cy], [W - hB, cy]].map(([px, py]) => `
+  <circle cx="${px}" cy="${py}" r="${hB - 16}" fill="none" stroke="#b8870a" stroke-width="3.5" opacity="0.75"/>
+  <circle cx="${px}" cy="${py}" r="${hB - 24}" fill="none" stroke="#e8c050" stroke-width="1" opacity="0.6"/>
+  <circle cx="${px}" cy="${py}" r="5" fill="#c8a030" opacity="0.9"/>
+  `).join('')}
+</svg>`;
+    },
+  },
+
+  // ── 8. Tavern Sign ───────────────────────────────────────────────────────
+  {
+    name: 'tavern-sign.png',
+    svg: () => `
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  <defs>
+    <linearGradient id="oak" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#4a2800"/>
+      <stop offset="40%"  stop-color="#321800"/>
+      <stop offset="100%" stop-color="#3e2004"/>
+    </linearGradient>
+    <linearGradient id="oakH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#8a5020" stop-opacity="0.3"/>
+      <stop offset="50%"  stop-color="#321800" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#8a5020" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="candleGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#e08010"/>
+      <stop offset="50%"  stop-color="#f0a020"/>
+      <stop offset="100%" stop-color="#e08010"/>
+    </linearGradient>
+    <filter id="warmGlow">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="ironShadow">
+      <feGaussianBlur stdDeviation="1.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark oak border -->
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#oak)"/>
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#oakH)"/>
+
+  <!-- Wood plank grain (horizontal) -->
+  ${[6, 13, 21, 30, 40, 50, 58].map(y => `
+  <line x1="0" y1="${y}"     x2="${W}" y2="${y}"     stroke="#200c00" stroke-width="1.5" opacity="0.4"/>
+  <line x1="0" y1="${H - y}" x2="${W}" y2="${H - y}" stroke="#200c00" stroke-width="1.5" opacity="0.4"/>
+  `).join('')}
+  <!-- Vertical plank dividers on side borders -->
+  ${[hB].map(x => `
+  <line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#200c00" stroke-width="2" opacity="0.35"/>
+  <line x1="${W - x}" y1="0" x2="${W - x}" y2="${H}" stroke="#200c00" stroke-width="2" opacity="0.35"/>
+  `).join('')}
+
+  <!-- Warm candle-glow inner border -->
+  <rect x="${B - 9}" y="${B - 9}" width="${W - B * 2 + 18}" height="${H - B * 2 + 18}" fill="none"
+    stroke="#c06008" stroke-width="4" filter="url(#warmGlow)" opacity="0.7"/>
+  <rect x="${B - 4}" y="${B - 4}" width="${W - B * 2 + 8}" height="${H - B * 2 + 8}" fill="none"
+    stroke="url(#candleGlow)" stroke-width="2" opacity="0.85"/>
+  <rect x="${B - 1}" y="${B - 1}" width="${W - B * 2 + 2}" height="${H - B * 2 + 2}" fill="none"
+    stroke="#f0c060" stroke-width="1" opacity="0.6"/>
+
+  <!-- Iron corner brackets (L-shaped, wrought iron look) -->
+  ${[[0, 0, 1, 1], [W, 0, -1, 1], [0, H, 1, -1], [W, H, -1, -1]].map(([px, py, sx, sy]) => {
+    const L = 52, T = 12;
+    const x = px + (sx < 0 ? -L : 0);
+    const y = py + (sy < 0 ? -T : 0);
+    const bx = px + (sx < 0 ? -T : 0);
+    const by = py + (sy < 0 ? -L : 0);
+    return `
+    <!-- Horizontal bar -->
+    <rect x="${Math.min(px, px + sx * L)}" y="${py + (sy > 0 ? 0 : -T)}"
+      width="${L}" height="${T}" rx="2" fill="#2a2a2a" filter="url(#ironShadow)"/>
+    <!-- Vertical bar -->
+    <rect x="${px + (sx > 0 ? 0 : -T)}" y="${Math.min(py, py + sy * L)}"
+      width="${T}" height="${L}" rx="2" fill="#2a2a2a" filter="url(#ironShadow)"/>
+    <!-- Corner rivet -->
+    <circle cx="${px + sx * (T / 2)}" cy="${py + sy * (T / 2)}"
+      r="5" fill="#3a3a3a" stroke="#585858" stroke-width="1.5"/>
+    <circle cx="${px + sx * (T / 2)}" cy="${py + sy * (T / 2)}" r="2" fill="#5a5a5a"/>`;
+  }).join('')}
+
+  <!-- Top: two hanging hooks (sign mount hardware) -->
+  ${[[cx - 200, 0], [cx + 200, 0]].map(([hx]) => `
+  <!-- Hook bracket -->
+  <rect x="${hx - 5}" y="0" width="10" height="30" rx="3" fill="#2a2a2a"/>
+  <!-- Hook curl -->
+  <path d="M ${hx},28 Q ${hx},42 ${hx - 12},42 Q ${hx - 20},42 ${hx - 20},34"
+    fill="none" stroke="#2a2a2a" stroke-width="8" stroke-linecap="round"/>
+  <!-- Chain links down from hook -->
+  <ellipse cx="${hx}" cy="50" rx="5" ry="8" fill="none" stroke="#3a3a3a" stroke-width="2.5"/>
+  <ellipse cx="${hx}" cy="58" rx="8" ry="4" fill="none" stroke="#3a3a3a" stroke-width="2.5"/>
+  `).join('')}
+
+  <!-- Iron nail studs along top/bottom borders -->
+  ${Array.from({ length: 14 }, (_, i) => {
+    const x = Math.round(80 + i * (W - 160) / 13);
+    return `
+    <circle cx="${x}" cy="${hB}" r="4.5" fill="#3a3a3a" stroke="#585858" stroke-width="1"/>
+    <circle cx="${x}" cy="${hB}" r="2" fill="#4a4a4a"/>
+    <circle cx="${x}" cy="${H - hB}" r="4.5" fill="#3a3a3a" stroke="#585858" stroke-width="1"/>
+    <circle cx="${x}" cy="${H - hB}" r="2" fill="#4a4a4a"/>`;
+  }).join('')}
+
+  <!-- Side nail studs -->
+  ${Array.from({ length: 7 }, (_, i) => {
+    const y = Math.round(B + 20 + i * (H - B * 2 - 40) / 6);
+    return `
+    <circle cx="${hB}" cy="${y}" r="4.5" fill="#3a3a3a" stroke="#585858" stroke-width="1"/>
+    <circle cx="${hB}" cy="${y}" r="2" fill="#4a4a4a"/>
+    <circle cx="${W - hB}" cy="${y}" r="4.5" fill="#3a3a3a" stroke="#585858" stroke-width="1"/>
+    <circle cx="${W - hB}" cy="${y}" r="2" fill="#4a4a4a"/>`;
+  }).join('')}
+</svg>`,
+  },
+
+  // ── 9. Treasure Map ──────────────────────────────────────────────────────
+  {
+    name: 'treasure-map.png',
+    svg: () => {
+      // Compass rose at (px,py), size r
+      const compass = (px, py, r) => {
+        const h = r * 0.45;
+        return `
+        <!-- Cardinal points (4-pointed star) -->
+        <polygon points="${px},${py - r} ${px - 6},${py - h} ${px},${py} ${px + 6},${py - h}" fill="#5c3808"/>
+        <polygon points="${px},${py + r} ${px - 6},${py + h} ${px},${py} ${px + 6},${py + h}" fill="#5c3808"/>
+        <polygon points="${px + r},${py} ${px + h},${py - 6} ${px},${py} ${px + h},${py + 6}" fill="#5c3808"/>
+        <polygon points="${px - r},${py} ${px - h},${py - 6} ${px},${py} ${px - h},${py + 6}" fill="#5c3808"/>
+        <!-- Diagonal tick lines -->
+        <line x1="${px - r * 0.65}" y1="${py - r * 0.65}" x2="${px + r * 0.65}" y2="${py + r * 0.65}"
+          stroke="#5c3808" stroke-width="1.2" opacity="0.5"/>
+        <line x1="${px + r * 0.65}" y1="${py - r * 0.65}" x2="${px - r * 0.65}" y2="${py + r * 0.65}"
+          stroke="#5c3808" stroke-width="1.2" opacity="0.5"/>
+        <!-- Outer ring -->
+        <circle cx="${px}" cy="${py}" r="${r + 3}" fill="none" stroke="#5c3808" stroke-width="1.5" opacity="0.6"/>
+        <!-- Center dot -->
+        <circle cx="${px}" cy="${py}" r="4" fill="#5c3808"/>
+        <circle cx="${px}" cy="${py}" r="2" fill="#c8900a"/>`;
+      };
+
+      // X marker
+      const xMark = (px, py, s, color) => `
+        <line x1="${px - s}" y1="${py - s}" x2="${px + s}" y2="${py + s}"
+          stroke="${color}" stroke-width="4" stroke-linecap="round"/>
+        <line x1="${px + s}" y1="${py - s}" x2="${px - s}" y2="${py + s}"
+          stroke="${color}" stroke-width="4" stroke-linecap="round"/>`;
+
+      return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  <defs>
+    <linearGradient id="mapParch" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#c8a040"/>
+      <stop offset="40%"  stop-color="#b08828"/>
+      <stop offset="100%" stop-color="#a07020"/>
+    </linearGradient>
+    <linearGradient id="mapParchH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#e8c060" stop-opacity="0.3"/>
+      <stop offset="50%"  stop-color="#b08828" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#e8c060" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sandy parchment border -->
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#mapParch)"/>
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#mapParchH)"/>
+
+  <!-- Aged outer edge -->
+  <rect x="0" y="0" width="${W}" height="${H}" fill="none"
+    stroke="#7a5010" stroke-width="20" opacity="0.25"/>
+
+  <!-- Torn-paper inner border (irregular dasharray) -->
+  <rect x="${B - 6}" y="${B - 6}" width="${W - B * 2 + 12}" height="${H - B * 2 + 12}" fill="none"
+    stroke="#7a5010" stroke-width="4" stroke-dasharray="3,6,9,4,6,11,5,3,8,5" opacity="0.75"/>
+  <rect x="${B - 2}" y="${B - 2}" width="${W - B * 2 + 4}" height="${H - B * 2 + 4}" fill="none"
+    stroke="#a07020" stroke-width="1.5" stroke-dasharray="5,8,12,5,7,10,4" opacity="0.55"/>
+
+  <!-- Compass rose — top-left corner -->
+  ${compass(hB, hB, hB - 10)}
+
+  <!-- X marks — bottom-right corner -->
+  ${xMark(W - hB, H - hB, 18, '#8b1a1a')}
+  <circle cx="${W - hB}" cy="${H - hB}" r="22" fill="none" stroke="#8b1a1a" stroke-width="2" opacity="0.6"/>
+
+  <!-- Dotted trail paths along borders (map route feel) -->
+  <!-- Top border trail -->
+  <line x1="${B + 20}" y1="${hB - 8}" x2="${W - B - 20}" y2="${hB - 8}"
+    stroke="#6b4010" stroke-width="2" stroke-dasharray="4,8" opacity="0.5"/>
+  <line x1="${B + 20}" y1="${hB + 8}" x2="${W - B - 20}" y2="${hB + 8}"
+    stroke="#6b4010" stroke-width="2" stroke-dasharray="4,8" stroke-dashoffset="6" opacity="0.4"/>
+  <!-- Bottom border trail -->
+  <line x1="${B + 20}" y1="${H - hB - 8}" x2="${W - B - 20}" y2="${H - hB - 8}"
+    stroke="#6b4010" stroke-width="2" stroke-dasharray="4,8" opacity="0.5"/>
+  <line x1="${B + 20}" y1="${H - hB + 8}" x2="${W - B - 20}" y2="${H - hB + 8}"
+    stroke="#6b4010" stroke-width="2" stroke-dasharray="4,8" stroke-dashoffset="6" opacity="0.4"/>
+
+  <!-- Wave symbols in side borders (sea indication) -->
+  ${[[hB, cy - 40], [hB, cy], [hB, cy + 40],
+     [W - hB, cy - 40], [W - hB, cy], [W - hB, cy + 40]].map(([px, py]) => `
+  <path d="M ${px - 16},${py} Q ${px - 8},${py - 7} ${px},${py} Q ${px + 8},${py + 7} ${px + 16},${py}"
+    fill="none" stroke="#5c6890" stroke-width="2" opacity="0.55"/>
+  `).join('')}
+
+  <!-- Top-right corner: small anchor symbol -->
+  <!-- Anchor ring -->
+  <circle cx="${W - hB}" cy="${hB - 12}" r="8" fill="none" stroke="#5c3808" stroke-width="2.5"/>
+  <!-- Shank -->
+  <line x1="${W - hB}" y1="${hB - 4}" x2="${W - hB}" y2="${hB + 14}"
+    stroke="#5c3808" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Stock -->
+  <line x1="${W - hB - 14}" y1="${hB - 2}" x2="${W - hB + 14}" y2="${hB - 2}"
+    stroke="#5c3808" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Flukes -->
+  <path d="M ${W - hB - 12},${hB + 8} Q ${W - hB - 17},${hB + 18} ${W - hB - 7},${hB + 19}
+           L ${W - hB},${hB + 14} L ${W - hB + 7},${hB + 19}
+           Q ${W - hB + 17},${hB + 18} ${W - hB + 12},${hB + 8}"
+    fill="none" stroke="#5c3808" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Aged stain blotches -->
+  <ellipse cx="160" cy="40" rx="80" ry="15" fill="#7a5010" opacity="0.08"/>
+  <ellipse cx="${W - 220}" cy="${H - 36}" rx="100" ry="14" fill="#6a4008" opacity="0.1"/>
+  <ellipse cx="${cx}" cy="32" rx="50" ry="10" fill="#c8a040" opacity="0.07"/>
+  <ellipse cx="${hB + 60}" cy="${H - hB}" rx="40" ry="10" fill="#7a5010" opacity="0.06"/>
+</svg>`;
+    },
+  },
+
+  // ── 10. The Forge (Blacksmith) ───────────────────────────────────────────
+  {
+    name: 'blacksmith.png',
+    svg: () => {
+      // Draw crossed hammers at (px, py)
+      const hammers = (px, py, len, color) => {
+        const hw = 5, hLen = len * 0.35;
+        return `
+        <!-- Hammer 1 (tilted left) -->
+        <line x1="${px - len * 0.5}" y1="${py + len * 0.5}"
+              x2="${px + len * 0.3}" y2="${py - len * 0.3}"
+          stroke="${color}" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+        <rect x="${(px + len * 0.12).toFixed(1)}" y="${(py - len * 0.48).toFixed(1)}"
+          width="${hLen}" height="${hw * 2.5}" rx="2"
+          fill="${color}" opacity="0.9"
+          transform="rotate(-45 ${(px + len * 0.12).toFixed(1)} ${(py - len * 0.48).toFixed(1)})"/>
+        <!-- Hammer 2 (tilted right) -->
+        <line x1="${px + len * 0.5}" y1="${py + len * 0.5}"
+              x2="${px - len * 0.3}" y2="${py - len * 0.3}"
+          stroke="${color}" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+        <rect x="${(px - len * 0.45).toFixed(1)}" y="${(py - len * 0.48).toFixed(1)}"
+          width="${hLen}" height="${hw * 2.5}" rx="2"
+          fill="${color}" opacity="0.9"
+          transform="rotate(45 ${(px - len * 0.45).toFixed(1)} ${(py - len * 0.48).toFixed(1)})"/>`;
+      };
+
+      // Chain link row along a horizontal line at y, from x1 to x2
+      const chainRow = (x1, x2, y, spacing = 24) => {
+        const links = [];
+        let x = x1 + 10;
+        let i = 0;
+        while (x < x2 - 10) {
+          if (i % 2 === 0) {
+            links.push(`<ellipse cx="${x.toFixed(0)}" cy="${y}" rx="10" ry="4.5"
+              fill="none" stroke="#5a5a5a" stroke-width="2.5"/>`);
+          } else {
+            links.push(`<ellipse cx="${x.toFixed(0)}" cy="${y}" rx="4.5" ry="10"
+              fill="none" stroke="#5a5a5a" stroke-width="2.5"/>`);
+          }
+          x += spacing / 2;
+          i++;
+        }
+        return links.join('');
+      };
+
+      // Chain link column along a vertical line at x, from y1 to y2
+      const chainCol = (x, y1, y2, spacing = 24) => {
+        const links = [];
+        let y = y1 + 10;
+        let i = 0;
+        while (y < y2 - 10) {
+          if (i % 2 === 0) {
+            links.push(`<ellipse cx="${x}" cy="${y.toFixed(0)}" rx="4.5" ry="10"
+              fill="none" stroke="#5a5a5a" stroke-width="2.5"/>`);
+          } else {
+            links.push(`<ellipse cx="${x}" cy="${y.toFixed(0)}" rx="10" ry="4.5"
+              fill="none" stroke="#5a5a5a" stroke-width="2.5"/>`);
+          }
+          y += spacing / 2;
+          i++;
+        }
+        return links.join('');
+      };
+
+      return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  <defs>
+    <linearGradient id="iron" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#1e1e1e"/>
+      <stop offset="50%"  stop-color="#141414"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <linearGradient id="ironSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#4a4a4a" stop-opacity="0.3"/>
+      <stop offset="50%"  stop-color="#141414" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#4a4a4a" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="forgeH" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#c04010"/>
+      <stop offset="30%"  stop-color="#e06018"/>
+      <stop offset="50%"  stop-color="#f08020"/>
+      <stop offset="70%"  stop-color="#e06018"/>
+      <stop offset="100%" stop-color="#c04010"/>
+    </linearGradient>
+    <linearGradient id="forgeV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#c04010"/>
+      <stop offset="30%"  stop-color="#e06018"/>
+      <stop offset="50%"  stop-color="#f08020"/>
+      <stop offset="70%"  stop-color="#e06018"/>
+      <stop offset="100%" stop-color="#c04010"/>
+    </linearGradient>
+    <filter id="forgeGlow">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="forgeMid">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark iron border -->
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#iron)"/>
+  <path fill-rule="evenodd" d="${fp()}" fill="url(#ironSheen)"/>
+
+  <!-- Hammered metal texture (subtle irregular patches) -->
+  ${Array.from({ length: 30 }, (_, i) => {
+    const t = i / 30;
+    const px = Math.round(10 + (t * 7919) % (W - 20));
+    const py = Math.round(5  + (t * 6271) % (B - 10));
+    const r  = 4 + (i % 5) * 2;
+    return `<circle cx="${px}" cy="${py}" r="${r}" fill="#282828" opacity="0.4"/>
+    <circle cx="${px}" cy="${H - py}" r="${r}" fill="#282828" opacity="0.4"/>`;
+  }).join('')}
+
+  <!-- Forge orange glow — inner edge (top/bottom) -->
+  <rect x="${B - 12}" y="${B - 12}" width="${W - B * 2 + 24}" height="${H - B * 2 + 24}" fill="none"
+    stroke="#c04010" stroke-width="6" filter="url(#forgeGlow)" opacity="0.9"/>
+  <rect x="${B - 6}" y="${B - 6}" width="${W - B * 2 + 12}" height="${H - B * 2 + 12}" fill="none"
+    stroke="#f08020" stroke-width="3" filter="url(#forgeMid)" opacity="0.85"/>
+  <rect x="${B - 2}" y="${B - 2}" width="${W - B * 2 + 4}" height="${H - B * 2 + 4}" fill="none"
+    stroke="#ffa040" stroke-width="1.5" opacity="0.8"/>
+
+  <!-- Chain links — top border center line -->
+  ${chainRow(B, W - B, hB)}
+  <!-- Chain links — bottom border center line -->
+  ${chainRow(B, W - B, H - hB)}
+  <!-- Chain links — left border center line -->
+  ${chainCol(hB, B, H - B)}
+  <!-- Chain links — right border center line -->
+  ${chainCol(W - hB, B, H - B)}
+
+  <!-- Corner: crossed hammers -->
+  ${[[hB, hB], [W - hB, hB], [hB, H - hB], [W - hB, H - hB]].map(([px, py]) =>
+    hammers(px, py, 38, '#888888')
+  ).join('')}
+
+  <!-- Spark dots near inner edge -->
+  ${Array.from({ length: 40 }, (_, i) => {
+    const t = i / 40;
+    const angle = t * Math.PI * 2;
+    const dist = 8 + (i % 4) * 6;
+    // Place sparks along inner border perimeter
+    const sx = i % 4 === 0 ? B + Math.round(t * (W - B * 2)) : (i % 4 === 1 ? W - B : (i % 4 === 2 ? B : B + Math.round(t * (W - B * 2))));
+    const sy = i % 4 === 0 ? B - dist : (i % 4 === 1 ? B + Math.round(t * (H - B * 2)) : (i % 4 === 2 ? H - B + dist : H - B));
+    const sr = 1 + (i % 3) * 0.8;
+    const bright = i % 3 === 0 ? '#ffc060' : (i % 3 === 1 ? '#ff8020' : '#ffdd80');
+    return `<circle cx="${sx}" cy="${sy}" r="${sr.toFixed(1)}" fill="${bright}" opacity="${(0.4 + (i % 5) * 0.12).toFixed(2)}"/>`;
+  }).join('')}
+
+  <!-- Outer edge highlight -->
+  <rect x="3" y="3" width="${W - 6}" height="${H - 6}" fill="none"
+    stroke="#4a4a4a" stroke-width="2" opacity="0.5"/>
+</svg>`;
+    },
+  },
 ];
 
 // ── Generate & copy ───────────────────────────────────────────────────────────

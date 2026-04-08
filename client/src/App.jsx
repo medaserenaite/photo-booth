@@ -13,12 +13,16 @@ import { fetchBoothConfig } from './lib/api.js';
 // ── Available frames ──────────────────────────────────────────────────────────
 const FRAMES = [
   { slug: 'none',              label: 'No Frame',        thumbnail: null },
-  { slug: 'gold-party',        label: 'Gold Trim',       thumbnail: '/frames/gold-party.png' },
+  // { slug: 'gold-party',        label: 'Gold Trim',       thumbnail: '/frames/gold-party.png' },
   { slug: 'neon-glow',         label: 'Cursed Glow',     thumbnail: '/frames/neon-glow.png' },
   { slug: 'classic-polaroid',  label: 'Wanted Poster',   thumbnail: '/frames/classic-polaroid.png' },
   { slug: 'jolly-roger',       label: 'Jolly Roger',     thumbnail: '/frames/jolly-roger.png' },
   { slug: 'rum-barrel',        label: 'Rum & Riches',    thumbnail: '/frames/rum-barrel.png' },
   { slug: 'sea-voyage',        label: 'Sea Voyage',      thumbnail: '/frames/sea-voyage.png' },
+  { slug: 'ships-wheel',       label: "Ship's Wheel",    thumbnail: '/frames/ships-wheel.png' },
+  { slug: 'tavern-sign',       label: 'Tavern Sign',     thumbnail: '/frames/tavern-sign.png' },
+  { slug: 'treasure-map',      label: 'Treasure Map',    thumbnail: '/frames/treasure-map.png' },
+  { slug: 'blacksmith',        label: 'The Forge',       thumbnail: '/frames/blacksmith.png' },
 ];
 
 // ── Main booth (password gate + flow) ────────────────────────────────────────

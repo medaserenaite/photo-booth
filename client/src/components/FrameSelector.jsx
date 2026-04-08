@@ -7,7 +7,7 @@ export default function FrameSelector({ frames, selected, onSelect, onNext, onBa
       </div>
 
       {/* Frame thumbnail row */}
-      <div className="flex gap-4 pb-2 w-full max-w-3xl hide-scrollbar px-2">
+      <div className="flex gap-4 pb-2 w-full max-w-3xl hide-scrollbar px-2 flex-wrap">
         {frames.map((frame) => (
           <FrameThumb
             key={frame.slug}
