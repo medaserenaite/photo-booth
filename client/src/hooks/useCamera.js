@@ -124,9 +124,9 @@ export function useCamera() {
     return canvas.toDataURL('image/jpeg', 0.92);
   }, []);
 
-  const startCountdown = useCallback(() => {
+  const startCountdown = useCallback((delay = 3) => {
     return new Promise((resolve) => {
-      let count = 3;
+      let count = delay;
       setCountdown(count);
 
       const tick = () => {

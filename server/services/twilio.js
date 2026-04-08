@@ -25,18 +25,20 @@ function getClient() {
  * @param {string} body     - Text body of the message
  * @returns {Promise<string>} Twilio message SID
  */
-export async function sendMMS(to, imageUrl, body) {
+export async function sendMMS(to, imageUrls, body) {
   const from = process.env.TWILIO_PHONE_NUMBER;
 
   if (!from) {
     throw new Error('Missing TWILIO_PHONE_NUMBER in environment');
   }
 
+  const urls = Array.isArray(imageUrls) ? imageUrls : [imageUrls];
+
   const message = await getClient().messages.create({
     from,
     to,
     body,
-    mediaUrl: [imageUrl],
+    mediaUrl: urls,   // Twilio supports up to 10 media URLs per message
   });
 
   return message.sid;

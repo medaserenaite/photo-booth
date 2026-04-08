@@ -12,7 +12,7 @@ function isValidPhone(formatted) {
   return formatted.replace(/\D/g, '').length === 10;
 }
 
-export default function PhoneInput({ photoId, onSuccess, onBack }) {
+export default function PhoneInput({ photoIds, onSuccess, onBack }) {
   const [display, setDisplay] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export default function PhoneInput({ photoId, onSuccess, onBack }) {
     setLoading(true);
     setError(null);
     try {
-      await sendSMS(photoId, display);
+      await sendSMS(photoIds, display);
       onSuccess();
     } catch (err) {
       if (err.status === 429) {
@@ -53,7 +53,9 @@ export default function PhoneInput({ photoId, onSuccess, onBack }) {
       <div className="text-center animate-fade-in">
         <div className="text-6xl mb-4 animate-flicker">🦅</div>
         <h2 className="step-title text-gradient">Dispatch by Raven</h2>
-        <p className="step-subtitle italic">To whom shall we deliver thy portrait?</p>
+        <p className="step-subtitle italic">
+          To whom shall we deliver {photoIds.length === 1 ? 'thy portrait' : `thy ${photoIds.length} portraits`}?
+        </p>
       </div>
 
       <div className="card p-8 w-full max-w-md flex flex-col gap-5 animate-slide-up">
@@ -101,7 +103,7 @@ export default function PhoneInput({ photoId, onSuccess, onBack }) {
               Dispatching…
             </>
           ) : (
-            '🦅 Send My Portrait!'
+            `🦅 Send My ${photoIds.length === 1 ? 'Portrait' : `${photoIds.length} Portraits`}!`
           )}
         </button>
 

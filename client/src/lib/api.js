@@ -28,8 +28,8 @@ export const uploadPhoto = (image, frame) =>
   request('POST', '/photos', { image, frame });
 
 // ── SMS ───────────────────────────────────────────────────────────────────────
-export const sendSMS = (photoId, phone) =>
-  request('POST', '/sms/send', { photoId, phone });
+export const sendSMS = (photoIds, phone) =>
+  request('POST', '/sms/send', { photoIds: Array.isArray(photoIds) ? photoIds : [photoIds], phone });
 
 // ── Gallery ───────────────────────────────────────────────────────────────────
 export const fetchGalleryInfo = () =>

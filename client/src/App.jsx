@@ -31,8 +31,8 @@ function Booth() {
   const [authed, setAuthed] = useState(false);
   const [step, setStep] = useState('welcome');
   const [selectedFrame, setSelectedFrame] = useState(FRAMES[0]);
-  const [capturedImage, setCapturedImage] = useState(null);
-  const [photoId, setPhotoId] = useState(null);
+  const [capturedImages, setCapturedImages] = useState([]);
+  const [photoIds, setPhotoIds] = useState([]);
 
   useEffect(() => {
     fetchBoothConfig().then((cfg) => {
@@ -48,8 +48,8 @@ function Booth() {
 
   const goToWelcome = useCallback(() => {
     setStep('welcome');
-    setCapturedImage(null);
-    setPhotoId(null);
+    setCapturedImages([]);
+    setPhotoIds([]);
     setSelectedFrame(FRAMES[0]);
   }, []);
 
@@ -82,11 +82,12 @@ function Booth() {
   }
 
   if (step === 'camera') {
-    return ( 
+    return (
       <Camera
         frame={selectedFrame}
-        onCapture={(dataUrl) => { setCapturedImage(dataUrl); setStep('preview'); }}
-        onBack={() => setStep('frame')}
+        initialShots={capturedImages}
+        onCapture={(images) => { setCapturedImages(images); setStep('preview'); }}
+        onBack={() => { setCapturedImages([]); setStep('frame'); }}
       />
     );
   }
@@ -94,12 +95,12 @@ function Booth() {
   if (step === 'preview') {
     return (
       <PhotoPreview
-        image={capturedImage}
+        images={capturedImages}
         frame={selectedFrame}
         frames={FRAMES}
         onFrameChange={setSelectedFrame}
-        onRetake={() => setStep('camera')}
-        onConfirm={(id) => { setPhotoId(id); setStep('phone'); }}
+        onRetake={(remaining) => { setCapturedImages(remaining); setStep('camera'); }}
+        onConfirm={(ids) => { setPhotoIds(ids); setStep('phone'); }}
       />
     );
   }
@@ -107,7 +108,7 @@ function Booth() {
   if (step === 'phone') {
     return (
       <PhoneInput
-        photoId={photoId}
+        photoIds={photoIds}
         onSuccess={() => setStep('success')}
         onBack={() => setStep('preview')}
       />
