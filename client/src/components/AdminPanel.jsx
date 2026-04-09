@@ -143,7 +143,7 @@ function AdminDashboard({ password }) {
                   <span className="ml-2 text-white/30 font-normal">(leave blank for no password)</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   value={settings.booth_password ?? ''}
                   onChange={(e) => setSettings({ ...settings, booth_password: e.target.value })}
                   className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-party-purple"
