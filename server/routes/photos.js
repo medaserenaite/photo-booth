@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { randomUUID } from 'crypto';
-import { saveBase64Photo } from '../services/imageProcessor.js';
+import { saveBase64Photo, compositeFrame } from '../services/imageProcessor.js';
 import { photoQueries } from '../services/db.js';
 
 const router = Router();
@@ -19,12 +19,19 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Invalid or missing image data' });
     }
 
-    const filename = `orig_${randomUUID()}.jpg`;
-    const savedPath = await saveBase64Photo(image, filename);
+    const uuid = randomUUID();
+    const origFilename = `orig_${uuid}.jpg`;
+    const savedPath = await saveBase64Photo(image, origFilename);
 
     const id = photoQueries.insert(savedPath, frame);
 
-    const publicUrl = `${process.env.PUBLIC_URL ?? ''}/uploads/${filename}`;
+    // Composite the frame onto the photo if one is selected
+    if (frame && frame !== 'none') {
+      const compositedPath = await compositeFrame(savedPath, frame, `comp_${uuid}`);
+      photoQueries.updateComposited(id, compositedPath);
+    }
+
+    const publicUrl = `${process.env.PUBLIC_URL ?? ''}/uploads/${origFilename}`;
 
     res.status(201).json({ id, originalUrl: publicUrl });
   } catch (err) {

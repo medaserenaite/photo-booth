@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Camera from './components/Camera.jsx';
 import FrameSelector from './components/FrameSelector.jsx';
@@ -28,9 +28,10 @@ const FRAMES = [
 // ── Main booth (password gate + flow) ────────────────────────────────────────
 function Booth() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [config, setConfig] = useState(null);
   const [authed, setAuthed] = useState(false);
-  const [step, setStep] = useState('welcome');
+  const [step, setStep] = useState(searchParams.get('start') ?? 'welcome');
   const [selectedFrame, setSelectedFrame] = useState(FRAMES[0]);
   const [capturedImages, setCapturedImages] = useState([]);
   // const [photoIds, setPhotoIds] = useState([]);

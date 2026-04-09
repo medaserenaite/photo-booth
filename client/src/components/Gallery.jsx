@@ -126,6 +126,11 @@ export default function Gallery() {
       {/* Masonry grid */}
       {photos.length > 0 && (
         <main className="flex-1 p-4">
+          <div className="flex justify-center mb-6">
+            <Link to="/?start=frame" className="btn-primary text-lg px-8 py-4">
+              ⚓ Sit for Another Portrait
+            </Link>
+          </div>
           <div className="masonry-grid max-w-7xl mx-auto">
             {photos.map((photo) => (
               <GalleryPhoto key={photo.id} photo={photo} onClick={() => setLightbox(photo)} />
