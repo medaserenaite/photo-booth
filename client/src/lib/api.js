@@ -76,6 +76,9 @@ export const fetchAdminSettings = (pw) =>
 export const saveAdminSettings = (pw, settings) =>
   adminRequest('POST', '/admin/settings', pw, settings);
 
+export const adminDeletePhoto = (pw, id) =>
+  adminRequest('DELETE', `/admin/photos/${id}`, pw);
+
 export const clearSession = (pw) =>
   adminRequest('POST', '/admin/clear-session', pw);
 

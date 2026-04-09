@@ -4,6 +4,7 @@ import {
   fetchAdminStats,
   fetchAdminPhotos,
   adminResend,
+  adminDeletePhoto,
   fetchAdminSettings,
   saveAdminSettings,
   clearSession,
@@ -95,6 +96,13 @@ function AdminDashboard({ password }) {
       setResendMsg(`Error: ${err.message}`);
     }
     setTimeout(() => setResendMsg(null), 3000);
+  }
+
+  async function handleDeletePhoto(id) {
+    if (!confirm(`Delete photo #${id}? This cannot be undone.`)) return;
+    await adminDeletePhoto(password, id);
+    setPhotos((prev) => prev.filter((p) => p.id !== id));
+    setTotal((t) => t - 1);
   }
 
   async function handleClearSession() {
@@ -271,6 +279,12 @@ function AdminDashboard({ password }) {
                     onClick={() => setResendPhotoId(photo.id)}
                   >
                     Resend
+                  </button>
+                  <button
+                    className="text-xs bg-red-900/80 hover:bg-red-700/90 text-white px-2 py-1 rounded-lg transition-colors"
+                    onClick={() => handleDeletePhoto(photo.id)}
+                  >
+                    🗑️ Delete
                   </button>
                 </div>
               </div>

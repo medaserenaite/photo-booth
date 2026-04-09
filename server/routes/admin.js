@@ -119,6 +119,29 @@ router.post('/resend', requireAdmin, async (req, res) => {
 });
 
 /**
+ * DELETE /api/admin/photos/:id
+ * Removes a single photo from the DB and deletes its files from disk.
+ */
+router.delete('/photos/:id', requireAdmin, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const photo = photoQueries.findById(id);
+    if (!photo) return res.status(404).json({ error: 'Photo not found' });
+
+    // Delete files from disk
+    for (const filePath of [photo.original_path, photo.composited_path]) {
+      if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
+
+    photoQueries.deleteById(id);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('DELETE /api/admin/photos/:id error:', err);
+    res.status(500).json({ error: 'Failed to delete photo' });
+  }
+});
+
+/**
  * GET /api/admin/settings
  */
 router.get('/settings', requireAdmin, (_req, res) => {

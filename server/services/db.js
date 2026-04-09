@@ -104,6 +104,10 @@ export const photoQueries = {
     return getDB().prepare('SELECT COUNT(*) as c FROM photos').get().c;
   },
 
+  deleteById(id) {
+    return getDB().prepare('DELETE FROM photos WHERE id = ?').run(id);
+  },
+
   deleteAll() {
     getDB().prepare('DELETE FROM photos').run();
   },
