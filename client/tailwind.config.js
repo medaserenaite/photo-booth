@@ -15,7 +15,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Georgia', 'serif'],
+        display: ['"Pirata One"', 'Georgia', 'serif'],
+        body:    ['"IM Fell English"', 'Georgia', 'serif'],
       },
       animation: {
         'pulse-slow':  'pulse 3s ease-in-out infinite',
