@@ -1,10 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import Camera from './components/Camera.jsx';
 import FrameSelector from './components/FrameSelector.jsx';
 import PhotoPreview from './components/PhotoPreview.jsx';
-import PhoneInput from './components/PhoneInput.jsx';
-import SuccessScreen from './components/SuccessScreen.jsx';
+// import PhoneInput from './components/PhoneInput.jsx';
+// import SuccessScreen from './components/SuccessScreen.jsx';
 import Gallery from './components/Gallery.jsx';
 import AdminPanel from './components/AdminPanel.jsx';
 import BoothGate from './components/BoothGate.jsx';
@@ -27,12 +27,13 @@ const FRAMES = [
 
 // ── Main booth (password gate + flow) ────────────────────────────────────────
 function Booth() {
+  const navigate = useNavigate();
   const [config, setConfig] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [step, setStep] = useState('welcome');
   const [selectedFrame, setSelectedFrame] = useState(FRAMES[0]);
   const [capturedImages, setCapturedImages] = useState([]);
-  const [photoIds, setPhotoIds] = useState([]);
+  // const [photoIds, setPhotoIds] = useState([]);
 
   useEffect(() => {
     fetchBoothConfig().then((cfg) => {
@@ -49,7 +50,6 @@ function Booth() {
   const goToWelcome = useCallback(() => {
     setStep('welcome');
     setCapturedImages([]);
-    setPhotoIds([]);
     setSelectedFrame(FRAMES[0]);
   }, []);
 
@@ -100,24 +100,24 @@ function Booth() {
         frames={FRAMES}
         onFrameChange={setSelectedFrame}
         onRetake={(remaining) => { setCapturedImages(remaining); setStep('camera'); }}
-        onConfirm={(ids) => { setPhotoIds(ids); setStep('phone'); }}
+        onConfirm={() => navigate('/gallery')}
       />
     );
   }
 
-  if (step === 'phone') {
-    return (
-      <PhoneInput
-        photoIds={photoIds}
-        onSuccess={() => setStep('success')}
-        onBack={() => setStep('preview')}
-      />
-    );
-  }
+  // if (step === 'phone') {
+  //   return (
+  //     <PhoneInput
+  //       photoIds={photoIds}
+  //       onSuccess={() => setStep('success')}
+  //       onBack={() => setStep('preview')}
+  //     />
+  //   );
+  // }
 
-  if (step === 'success') {
-    return <SuccessScreen onRestart={goToWelcome} />;
-  }
+  // if (step === 'success') {
+  //   return <SuccessScreen onRestart={goToWelcome} />;
+  // }
 
   return null;
 }
