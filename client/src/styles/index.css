@@ -14,7 +14,7 @@
     background-color: #0a0704;
     color: #f5e6c8;
     font-family: 'IM Fell English', Georgia, serif;
-    @apply antialiased overflow-hidden;
+    @apply antialiased;
     touch-action: manipulation;
     /* Subtle wood-grain noise texture */
     background-image:

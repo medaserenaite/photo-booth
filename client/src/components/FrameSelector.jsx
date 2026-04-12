@@ -1,13 +1,13 @@
 export default function FrameSelector({ frames, selected, onSelect, onNext, onBack }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-6">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-6 overflow-y-auto">
       <div className="text-center animate-fade-in">
         <h2 className="step-title text-gradient">Choose Thy Border</h2>
         <p className="step-subtitle italic">Select a frame for thy portrait</p>
       </div>
 
       {/* Frame thumbnail row */}
-      <div className="flex gap-4 pb-2 w-full max-w-3xl hide-scrollbar px-2 flex-wrap">
+      <div className="flex gap-4 pb-2 w-full max-w-3xl hide-scrollbar px-2 flex-wrap justify-center">
         {frames.map((frame) => (
           <FrameThumb
             key={frame.slug}

@@ -14,15 +14,17 @@ import { fetchBoothConfig } from './lib/api.js';
 const FRAMES = [
   { slug: 'none',              label: 'No Frame',        thumbnail: null },
   // { slug: 'gold-party',        label: 'Gold Trim',       thumbnail: '/frames/gold-party.png' },
-  { slug: 'neon-glow',         label: 'Cursed Glow',     thumbnail: '/frames/neon-glow.png' },
+  { slug: 'murder-mystery-2026',   label: 'Murder Mystery 2026',   thumbnail: '/frames/murder-mystery-2026.png' },
+  { slug: 'dead-mans-masquerade',  label: "Dead Man's Masquerade", thumbnail: '/frames/dead-mans-masquerade.png' },
   { slug: 'classic-polaroid',  label: 'Wanted Poster',   thumbnail: '/frames/classic-polaroid.png' },
   { slug: 'jolly-roger',       label: 'Jolly Roger',     thumbnail: '/frames/jolly-roger.png' },
   { slug: 'rum-barrel',        label: 'Rum & Riches',    thumbnail: '/frames/rum-barrel.png' },
   { slug: 'sea-voyage',        label: 'Sea Voyage',      thumbnail: '/frames/sea-voyage.png' },
+  { slug: 'blacksmith',        label: 'The Forge',       thumbnail: '/frames/blacksmith.png' },
   { slug: 'ships-wheel',       label: "Ship's Wheel",    thumbnail: '/frames/ships-wheel.png' },
   { slug: 'tavern-sign',       label: 'Tavern Sign',     thumbnail: '/frames/tavern-sign.png' },
   { slug: 'treasure-map',      label: 'Treasure Map',    thumbnail: '/frames/treasure-map.png' },
-  { slug: 'blacksmith',        label: 'The Forge',       thumbnail: '/frames/blacksmith.png' },
+  { slug: 'neon-glow',         label: 'Cursed Glow',     thumbnail: '/frames/neon-glow.png' },
 ];
 
 // ── Main booth (password gate + flow) ────────────────────────────────────────
