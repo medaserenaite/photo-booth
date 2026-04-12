@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch index.js",
-    "start": "node --experimental-sqlite index.js"
+    "start": "node --experimental-sqlite --no-warnings=ExperimentalWarning index.js"
   },
   "dependencies": {
     "archiver": "^7.0.1",
